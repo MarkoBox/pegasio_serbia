@@ -22,7 +22,7 @@ DEBUG = env.bool('DJANGO_DEBUG', False)
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
 # In Windows, this must be set to your system time zone.
-TIME_ZONE = 'UTC + 2'
+TIME_ZONE = 'Europe/Belgrade'
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = 'en-us'
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
@@ -39,7 +39,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres://localhost/pegasio_serbia'),
+    'default': env.db('DATABASE_URL', default='postgres://postgres:147852@localhost/pegasio_serbia'),
+
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
@@ -68,6 +69,7 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework',
+    'main_app',
 ]
 LOCAL_APPS = [
     'pegasio_serbia.users.apps.UsersAppConfig',
