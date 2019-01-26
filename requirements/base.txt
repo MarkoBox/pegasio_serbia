@@ -4,6 +4,19 @@ Pillow==5.4.1  # https://github.com/python-pillow/Pillow
 argon2-cffi==19.1.0  # https://github.com/hynek/argon2_cffi
 redis>=2.10.6, < 3  # pyup: < 3 # https://github.com/antirez/redis
 django-guardian==1.4.9  # https://django-guardian.readthedocs.io/en/stable/
+# import export
+# ------------------------------------------------------------------------------
+diff-match-patch==20181111
+xlwt==1.3.0
+odfpy==1.4.0
+xlrd==1.2.0
+unicodecsv==0.14.1
+pyyaml==3.13
+jdcal==1.4
+et-xmlfile==1.0.1
+openpyxl==2.5.14
+tablib==0.12.1
+django-import-export==1.2.0
 
 # Django
 # ------------------------------------------------------------------------------

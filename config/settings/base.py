@@ -71,6 +71,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'main_app',
     'guardian',
+    'import_export',
 ]
 LOCAL_APPS = [
     'pegasio_serbia.users.apps.UsersAppConfig',
