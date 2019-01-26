@@ -9,9 +9,8 @@ User = get_user_model()
 
 @admin.register(User)
 class UserAdmin(auth_admin.UserAdmin):
-
     form = UserChangeForm
     add_form = UserCreationForm
-    fieldsets = (("User", {"fields": ("name",)}),) + auth_admin.UserAdmin.fieldsets
-    list_display = ["username", "name", "is_superuser"]
+    fieldsets = (("User", {"fields": ("name",'user_type')}),) + auth_admin.UserAdmin.fieldsets
+    list_display = ["username", "name", 'user_type', 'email', "is_superuser"]
     search_fields = ["name"]
