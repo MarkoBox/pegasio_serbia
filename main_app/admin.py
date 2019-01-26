@@ -61,7 +61,7 @@ generate_codified_batch.short_description = 'Generate Codified Batch'
 
 @admin.register(Batches)
 class BatchesAdmin(ImportExportActionModelAdmin):
-    list_display = ['name', 'date_uploaded', 'file_sent_to_accountant', 'accountant_name', 'file_codified', 'gl_export',
+    list_display = ['name', 'file_sent_to_accountant', 'accountant_name', 'file_codified', 'gl_export',
                     'client_name']
     actions = [generate_pieces, generate_codified_batch]
 
@@ -84,6 +84,6 @@ class PiecesAdmin(ImportExportActionModelAdmin):
 
 @admin.register(BatchTracking)
 class BatchTrackingAdmin(ImportExportActionModelAdmin):
-    list_display = ['responsible_name', 'preparer_name', 'sent_to_accountant', 'archived_sent_batch',
+    list_display = ['sent_to_accountant', 'archived_sent_batch',
                     'booked_and_codified', 'controlled', 'sent_back_to_accountant', 'archived_to_alfresco',
                     'archived_to_grps', 'archived_of_gl_export', 'batch']

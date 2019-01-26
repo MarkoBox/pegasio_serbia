@@ -85,8 +85,8 @@ class Pieces(models.Model):
 
 
 class BatchTracking(models.Model):
-    reviewer = models.ForeignKey(User, on_delete=models.PROTECT)
-    preparer = models.ForeignKey(User, on_delete=models.PROTECT)
+    reviewer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='reviewers_batches')
+    preparer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='preparers_batches')
     sent_to_accountant = models.BooleanField(default=False)
     archived_sent_batch = models.BooleanField(default=False)
     booked_and_codified = models.BooleanField(default=False)
