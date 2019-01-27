@@ -3,7 +3,7 @@ from pegasio_serbia.users.models import User
 
 
 class Clients(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     alternative_name = models.CharField(max_length=255, null=True, blank=True)
     period_from = models.DateField()
     period_to = models.DateField()
@@ -22,13 +22,14 @@ class Clients(models.Model):
 
 
 class Batches(models.Model):
+    # name treba da bude kalkulativno polje
     name = models.CharField(max_length=255)
-    period = models.DateField()
+    number = models.IntegerField(unique=True)
+    period = models.CharField(max_length=20, null=True, blank=True)
     date_time_uploaded = models.DateTimeField(auto_now_add=True)
     file_sent_to_accountant = models.FileField(null=True, blank=True, upload_to='files_sent/')
     file_codified = models.FileField(null=True, blank=True, upload_to='files_codified/')
     gl_export = models.FileField(null=True, blank=True)
-    pieces_generated = models.BooleanField(default=False)
     accountant_name = models.ForeignKey(User, on_delete=models.PROTECT)
     client_name = models.ForeignKey(Clients, on_delete=models.CASCADE)
 
@@ -87,7 +88,8 @@ class Pieces(models.Model):
 class BatchTracking(models.Model):
     reviewer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='reviewers_batches')
     preparer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='preparers_batches')
-    sent_to_accountant = models.BooleanField(default=False)
+    pieces_generated = models.BooleanField(default=False)
+    accountant_notified = models.BooleanField(default=False)
     archived_sent_batch = models.BooleanField(default=False)
     booked_and_codified = models.BooleanField(default=False)
     controlled = models.BooleanField(default=False)

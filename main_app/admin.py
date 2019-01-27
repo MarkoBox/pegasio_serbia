@@ -11,7 +11,8 @@ from main_app.InMemoryZip import InMemoryZipFile
 
 @admin.register(Clients)
 class ClientsAdmin(ImportExportActionModelAdmin):
-    list_display = ['name', 'period_from', 'period_to']
+    list_display = ['name', 'vat', 'period_from', 'period_to', 'path_grps', 'path_alfresco', 'chr_flag',
+                    'e_comerce_flag']
 
 
 def generate_pieces(modeladmin, request, queryset):
@@ -46,11 +47,13 @@ def generate_codified_batch(modeladmin, request, queryset):
         for piece in pieces:
             in_file = open(piece.file.path, 'rb')
             data = in_file.read()
-            mem_zip.append(filename_in_zip=f'/{piece.folder_assigned}/{piece.period}/{piece.codification}.{piece.file_name.rsplit(".")[-1]}'
+            mem_zip.append(filename_in_zip=f'/{piece.folder_assigned}/{piece.period}/{piece.codification}\
+            .{piece.file_name.rsplit(".")[-1]}'
                            , file_contents=data)
             in_file.close()
         data = mem_zip.data
-        files_codified = SimpleUploadedFile.from_dict({'content': data, 'filename': batch.name + '.zip', 'content-type': 'application/zip'})
+        files_codified = SimpleUploadedFile.from_dict(
+            {'content': data, 'filename': batch.name + '.zip', 'content-type': 'application/zip'})
         obj = Batches.objects.get(pk=batch.id)
         obj.file_codified = files_codified
         obj.save()
@@ -61,8 +64,8 @@ generate_codified_batch.short_description = 'Generate Codified Batch'
 
 @admin.register(Batches)
 class BatchesAdmin(ImportExportActionModelAdmin):
-    list_display = ['name', 'file_sent_to_accountant', 'accountant_name', 'file_codified', 'gl_export',
-                    'client_name']
+    list_display = ['name', 'period', 'file_sent_to_accountant', 'accountant_name', 'file_codified', 'gl_export',
+                    'client_name', 'date_time_uploaded']
     actions = [generate_pieces, generate_codified_batch]
 
 
