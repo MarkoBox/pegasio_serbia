@@ -30,6 +30,7 @@ class Batches(models.Model):
     file_sent_to_accountant = models.FileField(null=True, blank=True, upload_to='files_sent/')
     file_codified = models.FileField(null=True, blank=True, upload_to='files_codified/')
     gl_export = models.FileField(null=True, blank=True)
+    comment = models.CharField(null=True, blank=True)
     accountant_name = models.ForeignKey(User, on_delete=models.PROTECT)
     client_name = models.ForeignKey(Clients, on_delete=models.CASCADE)
 
@@ -53,17 +54,25 @@ class Pieces(models.Model):
     ACHATS = 'Achats'
     BANQUE = 'Banque'
     VENTES = 'Ventes'
+    CAISSE = 'Caisse'
     OD = 'OD'
     REJECTS = 'Rejects'
     INCOMPLETE = 'Incomplete'
+    DOUBLONS = 'Doublons'
+    GED = 'Ged'
+    FORWARDED = 'Forwarded'
     # dodaj ostale
     FOLDER_CHOISES = (
         (ACHATS, 'Achats'),
         (BANQUE, 'Banque'),
         (VENTES, 'Ventes'),
+        (CAISSE, 'Caisse'),
+        (OD, 'OD'),
         (REJECTS, 'Rejects'),
         (INCOMPLETE, 'Incomplete'),
-        (OD, 'OD')
+        (DOUBLONS, 'Doublons'),
+        (GED, 'Ged'),
+        (FORWARDED, 'Forwarded')
     )
     # dodaj regex validatore na codification polje i period polje
     file = models.FileField(null=True, blank=True, upload_to=piece_upload_path)
@@ -74,6 +83,7 @@ class Pieces(models.Model):
     folder_assigned = models.CharField(max_length=255, choices=FOLDER_CHOISES, null=True,
                                        blank=True)
     booked = models.BooleanField(default=False)
+    comment = models.CharField(max_length=255, null=True, blank=True)
     batch = models.ForeignKey(Batches, on_delete=models.CASCADE)
 
     def __str__(self):
