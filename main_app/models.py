@@ -30,7 +30,7 @@ class Batches(models.Model):
     file_sent_to_accountant = models.FileField(null=True, blank=True, upload_to='files_sent/')
     file_codified = models.FileField(null=True, blank=True, upload_to='files_codified/')
     gl_export = models.FileField(null=True, blank=True)
-    comment = models.CharField(null=True, blank=True)
+    comment = models.CharField(max_length=255, null=True, blank=True)
     accountant_name = models.ForeignKey(User, on_delete=models.PROTECT)
     client_name = models.ForeignKey(Clients, on_delete=models.CASCADE)
 
@@ -107,6 +107,7 @@ class BatchTracking(models.Model):
     archived_to_alfresco = models.BooleanField(default=False)
     archived_to_grps = models.BooleanField(default=False)
     archived_of_gl_export = models.BooleanField(default=False)
+    comment = models.CharField(max_length=255, null=True, blank=True)
     batch = models.OneToOneField(Batches, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):

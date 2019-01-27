@@ -9,6 +9,11 @@ import os
 from main_app.InMemoryZip import InMemoryZipFile
 
 
+admin.site.site_header = 'Pegasio Serbia'  # default: "Django Administration"
+admin.site.index_title = 'Pegasio Serbia'  # default: "Site administration"
+admin.site.site_title = 'Pegasio Serbia'  # default: "Django site admin"
+
+
 @admin.register(Clients)
 class ClientsAdmin(ImportExportActionModelAdmin):
     list_display = ['name', 'vat', 'period_from', 'period_to', 'path_grps', 'path_alfresco', 'chr_flag',
@@ -87,6 +92,6 @@ class PiecesAdmin(ImportExportActionModelAdmin):
 
 @admin.register(BatchTracking)
 class BatchTrackingAdmin(ImportExportActionModelAdmin):
-    list_display = ['sent_to_accountant', 'archived_sent_batch',
+    list_display = ['archived_sent_batch',
                     'booked_and_codified', 'controlled', 'sent_back_to_accountant', 'archived_to_alfresco',
                     'archived_to_grps', 'archived_of_gl_export', 'batch']
