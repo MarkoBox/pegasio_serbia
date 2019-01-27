@@ -69,12 +69,13 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework',
-    'main_app',
+
     'guardian',
     'import_export',
 ]
 LOCAL_APPS = [
     'pegasio_serbia.users.apps.UsersAppConfig',
+    'main_app.apps.MainAppConfig',
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
