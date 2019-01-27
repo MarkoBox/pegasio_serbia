@@ -8,7 +8,6 @@ import zipfile
 import os
 from main_app.InMemoryZip import InMemoryZipFile
 
-
 admin.site.site_header = 'Pegasio Serbia'  # default: "Django Administration"
 admin.site.index_title = 'Pegasio Serbia'  # default: "Site administration"
 admin.site.site_title = 'Pegasio Serbia'  # default: "Django site admin"
@@ -16,8 +15,8 @@ admin.site.site_title = 'Pegasio Serbia'  # default: "Django site admin"
 
 @admin.register(Clients)
 class ClientsAdmin(ImportExportActionModelAdmin):
-    list_display = ['name', 'vat', 'period_from', 'period_to', 'path_grps', 'path_alfresco', 'chr_flag',
-                    'e_comerce_flag']
+    list_display = ['name', 'alternative_name', 'vat', 'period_from', 'period_to', 'path_grps', 'path_alfresco',
+                    'chr_flag', 'e_comerce_flag']
 
 
 def generate_pieces(modeladmin, request, queryset):
@@ -38,7 +37,7 @@ def generate_pieces(modeladmin, request, queryset):
                                              folder_original=os.path.dirname(file_name),
                                              batch=batch)
                 # chekiraj da je batch generisan
-                Batches.objects.filter(pk=batch.id).update(pieces_generated=True)
+                BatchTracking.objects.filter(pk=batch.id).update(pieces_generated=True)
 
 
 generate_pieces.short_description = 'Generate Pieces'
@@ -62,6 +61,8 @@ def generate_codified_batch(modeladmin, request, queryset):
         obj = Batches.objects.get(pk=batch.id)
         obj.file_codified = files_codified
         obj.save()
+        # chekiraj da je batch proknjizen i kodifikovan
+        BatchTracking.objects.filter(pk=batch.id).update(booked_and_codified=True)
 
 
 generate_codified_batch.short_description = 'Generate Codified Batch'
@@ -69,17 +70,17 @@ generate_codified_batch.short_description = 'Generate Codified Batch'
 
 @admin.register(Batches)
 class BatchesAdmin(ImportExportActionModelAdmin):
-    list_display = ['name', 'period', 'file_sent_to_accountant', 'accountant_name', 'file_codified', 'gl_export',
+    list_display = ['name', 'month_year', 'file_sent_to_accountant', 'accountant_name', 'file_codified', 'gl_export',
                     'client_name', 'date_time_uploaded']
     actions = [generate_pieces, generate_codified_batch]
 
 
 @admin.register(Pieces)
 class PiecesAdmin(ImportExportActionModelAdmin):
-    list_display = ['file', 'file_name', 'folder_original', 'codification', 'period', 'folder_assigned', 'booked',
+    list_display = ['file', 'file_name', 'folder_original', 'codification', 'folder_month', 'folder_assigned', 'booked',
                     'batch',
                     'get_client']
-    list_editable = ['codification', 'period', 'folder_assigned', 'booked']
+    list_editable = ['codification', 'folder_month', 'folder_assigned', 'booked']
     list_filter = ['batch', 'folder_original', 'folder_assigned', 'batch__client_name']
     save_as = True
 

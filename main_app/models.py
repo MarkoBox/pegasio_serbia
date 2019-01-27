@@ -9,9 +9,9 @@ class Clients(models.Model):
     period_to = models.DateField()
     path_grps = models.CharField(max_length=255, null=True, blank=True)
     path_alfresco = models.CharField(max_length=255, null=True, blank=True)
-    chr_flag = models.BooleanField()
-    e_comerce_flag = models.BooleanField()
-    vat = models.CharField(max_length=20, null=True, blank=True)
+    chr_flag = models.BooleanField(verbose_name='CHR')
+    e_comerce_flag = models.BooleanField(verbose_name='E commerce')
+    vat = models.CharField(max_length=20, null=True, blank=True, verbose_name='VAT date')
 
     def __str__(self):
         return self.name
@@ -25,7 +25,7 @@ class Batches(models.Model):
     # name treba da bude kalkulativno polje
     name = models.CharField(max_length=255)
     number = models.IntegerField(unique=True)
-    period = models.CharField(max_length=20, null=True, blank=True)
+    month_year = models.CharField(max_length=20, null=True, blank=True, verbose_name='MY of Batch')
     date_time_uploaded = models.DateTimeField(auto_now_add=True)
     file_sent_to_accountant = models.FileField(null=True, blank=True, upload_to='files_sent/')
     file_codified = models.FileField(null=True, blank=True, upload_to='files_codified/')
@@ -79,7 +79,7 @@ class Pieces(models.Model):
     file_name = models.CharField(max_length=255)
     folder_original = models.CharField(max_length=255, null=True, blank=True)
     codification = models.CharField(max_length=255, null=True, blank=True)
-    period = models.CharField(max_length=255, null=True, blank=True)
+    folder_month = models.CharField(max_length=255, null=True, blank=True)
     folder_assigned = models.CharField(max_length=255, choices=FOLDER_CHOISES, null=True,
                                        blank=True)
     booked = models.BooleanField(default=False)
@@ -96,8 +96,10 @@ class Pieces(models.Model):
 
 
 class BatchTracking(models.Model):
-    reviewer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='reviewers_batches')
-    preparer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='preparers_batches')
+    reviewer = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT,
+                                 related_name='reviewers_batches')
+    preparer = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT,
+                                 related_name='preparers_batches')
     pieces_generated = models.BooleanField(default=False)
     accountant_notified = models.BooleanField(default=False)
     archived_sent_batch = models.BooleanField(default=False)
