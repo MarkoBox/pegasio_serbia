@@ -96,7 +96,7 @@ class Pieces(models.Model):
         return self.file_name
 
     class Meta:
-        ordering = ['folder_original', 'file_name']
+        ordering = ['folder_original', 'file_name', 'batch']
         verbose_name = 'piece'
         verbose_name_plural = 'pieces'
 
@@ -119,7 +119,7 @@ class BatchTracking(models.Model):
     batch = models.OneToOneField(Batches, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
-        return self.batch.name
+        return self.batch.batch_name
 
     class Meta:
         verbose_name = 'batch tracking'
