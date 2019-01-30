@@ -57,7 +57,7 @@ def generate_codified_batch(modeladmin, request, queryset):
             in_file.close()
         data = mem_zip.data
         files_codified = SimpleUploadedFile.from_dict(
-            {'content': data, 'filename': batch.name + '.zip', 'content-type': 'application/zip'})
+            {'content': data, 'filename': batch.batch_name + '.zip', 'content-type': 'application/zip'})
         obj = Batches.objects.get(pk=batch.id)
         obj.file_codified = files_codified
         obj.save()
@@ -70,7 +70,7 @@ generate_codified_batch.short_description = 'Generate Codified Batch'
 
 @admin.register(Batches)
 class BatchesAdmin(ImportExportActionModelAdmin):
-    list_display = ['name', 'month_year', 'file_sent_to_accountant', 'accountant_name', 'file_codified', 'gl_export',
+    list_display = ['batch_name', 'month_year', 'file_sent_to_accountant', 'accountant_name', 'file_codified', 'gl_export',
                     'client_name', 'date_time_uploaded']
     actions = [generate_pieces, generate_codified_batch]
 

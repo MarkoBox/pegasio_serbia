@@ -23,9 +23,9 @@ class Clients(models.Model):
 
 class Batches(models.Model):
     # name treba da bude kalkulativno polje
-    name = models.CharField(max_length=255)
+    # name = models.CharField(max_length=255)
     number = models.IntegerField(unique=True)
-    month_year = models.CharField(max_length=20, null=True, blank=True, verbose_name='MY of Batch')
+    month_year = models.CharField(max_length=20, null=True, blank=True, verbose_name='MonthYear')
     date_time_uploaded = models.DateTimeField(auto_now_add=True)
     file_sent_to_accountant = models.FileField(null=True, blank=True, upload_to='files_sent/')
     file_codified = models.FileField(null=True, blank=True, upload_to='files_codified/')
@@ -35,7 +35,13 @@ class Batches(models.Model):
     client_name = models.ForeignKey(Clients, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.name} {self.client_name}'
+        return f'{self.batch_name}'
+
+    def _get_batch_name(self):
+        """Return batch name"""
+        return f"B-{self.number} {self.month_year} {self.client_name}"
+
+    batch_name = property(_get_batch_name)
 
     class Meta:
         verbose_name = 'batch'
