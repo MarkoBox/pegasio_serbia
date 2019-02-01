@@ -47,7 +47,7 @@ def generate_codified_batch(modeladmin, request, queryset):
     """Function to create folder and file structure and zip it"""
     for batch in queryset:
         pieces = Pieces.objects.filter(batch=batch)
-        mem_zip = InMemoryZipFile(file_name=batch.name)
+        mem_zip = InMemoryZipFile(file_name=batch.batch_name)
         for piece in pieces:
             in_file = open(piece.file.path, 'rb')
             data = in_file.read()
