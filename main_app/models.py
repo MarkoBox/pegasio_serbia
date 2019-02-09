@@ -47,10 +47,6 @@ class Batches(models.Model):
         verbose_name = 'batch'
         verbose_name_plural = 'batches'
 
-    def generate_pieces(self):
-        # funkciju sa admina prebaci ovde, napravi check da ako je gore polje checkirano da ne pravi novi batch.
-        pass
-
 
 def piece_upload_path(instance, filename):
     return f'pieces/{instance.batch.name}/{filename}'
