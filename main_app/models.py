@@ -49,7 +49,7 @@ class Batches(models.Model):
 
 
 def piece_upload_path(instance, filename):
-    return f'pieces/{instance.batch.name}/{filename}'
+    return f'pieces/{instance.batch.batch_name}/{filename}'
 
 
 class Pieces(models.Model):
