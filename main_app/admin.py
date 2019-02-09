@@ -51,7 +51,7 @@ def generate_codified_batch(modeladmin, request, queryset):
         for piece in pieces:
             in_file = open(piece.file.path, 'rb')
             data = in_file.read()
-            mem_zip.append(filename_in_zip=f'/{piece.folder_assigned}/{piece.period}/{piece.codification}\
+            mem_zip.append(filename_in_zip=f'/{piece.folder_assigned}/{piece.folder_month}/{piece.codification}\
             .{piece.file_name.rsplit(".")[-1]}'
                            , file_contents=data)
             in_file.close()
