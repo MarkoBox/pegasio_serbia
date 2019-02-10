@@ -55,6 +55,13 @@ def piece_upload_path(instance, filename):
 class FolderChoises(models.Model):
     folder_name = models.CharField(max_length=255, null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.folder_name}'
+
+    class Meta:
+        verbose_name = 'folder choice'
+        verbose_name_plural = 'folder choices'
+
 
 class Pieces(models.Model):
     ACHATS = 'Achats'
