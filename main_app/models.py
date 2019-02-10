@@ -52,6 +52,10 @@ def piece_upload_path(instance, filename):
     return f'pieces/{instance.batch.batch_name}/{filename}'
 
 
+class FolderChoises(models.Model):
+    folder_name = models.CharField(max_length=255, null=True, blank=True)
+
+
 class Pieces(models.Model):
     ACHATS = 'Achats'
     BANQUE = 'Banque'
@@ -82,10 +86,10 @@ class Pieces(models.Model):
     folder_original = models.CharField(max_length=255, null=True, blank=True)
     codification = models.CharField(max_length=255, null=True, blank=True)
     folder_month = models.CharField(max_length=255, null=True, blank=True)
-    folder_assigned = models.CharField(max_length=255, choices=FOLDER_CHOISES, null=True,
-                                       blank=True)
     booked = models.BooleanField(default=False)
     comment = models.CharField(max_length=255, null=True, blank=True)
+    folder_assigned = models.ForeignKey(FolderChoises, on_delete=models.PROTECT, null=True,
+                                        blank=True)
     batch = models.ForeignKey(Batches, on_delete=models.CASCADE)
 
     def __str__(self):

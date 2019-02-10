@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Clients, Batches, Pieces, BatchTracking
+from .models import Clients, Batches, Pieces, BatchTracking, FolderChoises
 from import_export.admin import ImportExportActionModelAdmin
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -51,13 +51,15 @@ def generate_codified_batch(modeladmin, request, queryset):
         for piece in pieces:
             in_file = open(piece.file.path, 'rb')
             data = in_file.read()
-            mem_zip.append(filename_in_zip=f'/{piece.folder_assigned}/{piece.folder_month}/{piece.codification}\
-            .{piece.file_name.rsplit(".")[-1]}'
-                           , file_contents=data)
+            # moze li ovo bolje
+            if piece.codification is None:
+                filename_in_zip = f'/{piece.folder_assigned}/{piece.folder_month}/{piece.file_name}'
+            else:
+                filename_in_zip = f'/{piece.folder_assigned}/{piece.folder_month}/{piece.codification}.{piece.file_name.rsplit(".")[-1]}'
+            mem_zip.append(filename_in_zip=filename_in_zip, file_contents=data)
             in_file.close()
         data = mem_zip.data
-        files_codified = SimpleUploadedFile.from_dict(
-            {'content': data, 'filename': batch.batch_name + '.zip', 'content-type': 'application/zip'})
+        files_codified = SimpleUploadedFile.from_dict({'content': data, 'filename': batch.batch_name + '.zip', 'content-type': 'application/zip'})
         obj = Batches.objects.get(pk=batch.id)
         obj.file_codified = files_codified
         obj.save()
@@ -70,7 +72,8 @@ generate_codified_batch.short_description = 'Generate Codified Batch'
 
 @admin.register(Batches)
 class BatchesAdmin(ImportExportActionModelAdmin):
-    list_display = ['batch_name', 'month_year', 'file_sent_to_accountant', 'accountant_name', 'file_codified', 'gl_export',
+    list_display = ['batch_name', 'month_year', 'file_sent_to_accountant', 'accountant_name', 'file_codified',
+                    'gl_export',
                     'client_name', 'date_time_uploaded']
     actions = [generate_pieces, generate_codified_batch]
 
@@ -96,3 +99,9 @@ class BatchTrackingAdmin(ImportExportActionModelAdmin):
     list_display = ['archived_sent_batch',
                     'booked_and_codified', 'controlled', 'sent_back_to_accountant', 'archived_to_alfresco',
                     'archived_to_grps', 'archived_of_gl_export', 'batch']
+
+
+@admin.register(FolderChoises)
+class FolderChoisesAdmin(ImportExportActionModelAdmin):
+    list_display = ['id', 'folder_name']
+    list_editable = ['folder_name']
