@@ -87,6 +87,7 @@ class PiecesAdmin(ImportExportActionModelAdmin):
     list_filter = ['batch', 'folder_original', 'folder_assigned', 'batch__client_name']
     list_display_links = ['file_name']
     save_as = True
+    save_on_top = True
 
     def get_client(self, obj):
         return obj.batch.client_name
