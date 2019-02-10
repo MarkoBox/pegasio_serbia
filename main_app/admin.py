@@ -83,7 +83,7 @@ class PiecesAdmin(ImportExportActionModelAdmin):
     list_display = ['file', 'file_name', 'folder_original', 'codification', 'folder_month', 'folder_assigned', 'booked',
                     'comment',
                     'batch', ]
-    list_editable = ['codification', 'folder_month', 'folder_assigned', 'booked']
+    list_editable = ['codification', 'folder_month', 'folder_assigned', 'booked', 'comment']
     list_filter = ['batch', 'folder_original', 'folder_assigned', 'batch__client_name']
     list_display_links = ['file_name']
     save_as = True
