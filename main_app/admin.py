@@ -13,6 +13,12 @@ admin.site.index_title = 'Pegasio Serbia'  # default: "Site administration"
 admin.site.site_title = 'Pegasio Serbia'  # default: "Django site admin"
 
 
+class PiecesInLine(admin.TabularInline):
+    model = Pieces
+    readonly_fields = ('file', 'file_name', 'folder_original',)
+    can_delete = False
+
+
 @admin.register(Clients)
 class ClientsAdmin(ImportExportActionModelAdmin):
     list_display = ['name', 'alternative_name', 'vat', 'period_from', 'period_to', 'path_grps', 'path_alfresco',
@@ -76,6 +82,7 @@ class BatchesAdmin(ImportExportActionModelAdmin):
                     'gl_export',
                     'client_name', 'date_time_uploaded']
     actions = [generate_pieces, generate_codified_batch]
+    inlines = [PiecesInLine]
 
 
 @admin.register(Pieces)
