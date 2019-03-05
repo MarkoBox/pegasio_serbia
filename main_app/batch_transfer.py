@@ -2,6 +2,7 @@
 Klasa za ftp komunikaciju. Upotrebi https://stackoverflow.com/questions/1984325/explaining-pythons-enter-and-exit
 """
 import ftplib
+import os
 
 
 class BatchTransfer:
@@ -18,10 +19,26 @@ class BatchTransfer:
             message = template.format(type(ex).__name__, ex.args)
             print(message)
 
-
     def change_directory(self, dir):
         self.ftp.cwd(dir)
 
-
-    def get_folder(self, folder):
+    def download_folder(self, folder):
         pass
+
+    def upload_file(self, path, file):
+        pass
+
+    def upload_directory(self, path):
+        files = os.listdir(path)
+        os.chdir(path)
+        for f in files:
+            if os.path.isfile(path + r'\{}'.format(f)):
+                fh = open(f, 'rb')
+                self.ftp.storbinary('STOR %s' % f, fh)
+                fh.close()
+            elif os.path.isdir(path + r'\{}'.format(f)):
+                self.ftp.mkd(f)
+                self.ftp.cwd(f)
+                self.upload_directory(path + r'\{}'.format(f))
+                self.ftp.cwd('..')
+        os.chdir('..')
